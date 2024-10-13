@@ -8,6 +8,7 @@ const NyxcipherRouter = require('./nyxcipher')
 const ItemRouter = require('./item')
 const TicketRouter = require('./ticket')
 const PaymentRouter = require('./payment')
+const TransactionRouter = require('./transactions')
 const AuthRouter = require('./auth')
 
 //------------ Welcome Route ------------//
@@ -21,6 +22,8 @@ router.use('/nyxcipher', NyxcipherRouter);
 router.use('/item', ItemRouter);
 router.use('/ticket', TicketRouter);
 router.use('/payment', PaymentRouter);
+router.use('/transantions', TransactionRouter);
+
 router.use('/auth', AuthRouter)
 
 module.exports = router;
