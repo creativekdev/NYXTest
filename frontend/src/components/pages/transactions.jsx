@@ -8,58 +8,35 @@ function Transactions() {
 
   // Function to fetch transactions from the Bitquery API
   const fetchTransactions = async () => {
-    setLoading(true);
+    setLoading(true); // Manage the loading state in your UI
     try {
-      const response = await fetch('https://cors-anywhere.herokuapp.com/https://graphql.bitquery.io/', {
-        method: 'POST',
+      // Make a request to your backend API instead of Bitquery directly
+      const response = await fetch('http://localhost:5000/api/transactions/top10', {
+        method: 'GET', // Adjust method to 'GET' or whatever is appropriate for your backend API
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': 'BQYsSEDkI48tcnGecUYnGdrEZdd5apK2' // Replace with your Bitquery API key
         },
-        body: JSON.stringify({
-          query: `
-          {
-            ethereum(network: bsc) {
-              transfers(
-                options: {desc: "amount", limit: 10, offset: 0}
-                date: {since: "2024-10-01"}
-                currency: {is: "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"}
-                amount: {gt: 0}
-              ) {
-                    amount
-                    currency {
-                      symbol
-                    }
-                    receiver {
-                      address
-                    }
-                    transaction {
-                      hash          
-                    }
-              }
-            }
-          }
-                        
-          `
-        })
       });
-
+  
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-
-      const data = await response.json();
-      console.log(data);
-      if (data?.data?.ethereum?.transfers) {
-        setTransactions(data.data.ethereum.transfers);
+  
+      const data = await response.json(); // Parse the response as JSON
+      console.log(data); // Log the full response for debugging
+  
+      if (data?.data) {
+        // If transactions data is available, update the state
+        setTransactions(data.data); // Assume setTransactions manages the transaction state
       } else {
-        setTransactions([]); // Set to empty if no transfers found
+        // No data found, set to empty array
+        setTransactions([]);
       }
     } catch (error) {
       console.error('Error fetching transactions:', error);
-      setTransactions([]); // Optionally set to empty if an error occurs
+      setTransactions([]); // Set to empty in case of error
     } finally {
-      setLoading(false);
+      setLoading(false); // Turn off the loading spinner or indicator
     }
   };
 
@@ -108,7 +85,6 @@ function Transactions() {
                   <tr className="bg-gray-800">
                     <th className="p-2 border-b">Transaction Hash</th>
                     <th className="p-2 border-b">Receiver Address</th>
-                    <th className="p-2 border-b">Currency</th>
                     <th className="p-2 border-b">Amount</th>
                   </tr>
                 </thead>
@@ -118,7 +94,6 @@ function Transactions() {
                       <tr key={index} className="bg-gray-700">
                         <td className="p-2 border-b">{transaction.transaction.hash}</td>
                         <td className="p-2 border-b">{transaction.receiver.address}</td>
-                        <td className="p-2 border-b">{transaction.currency.symbol}</td>
                         <td className="p-2 border-b">{transaction.amount}</td>
                       </tr>
                     ))
