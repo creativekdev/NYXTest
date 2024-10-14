@@ -22,7 +22,7 @@ router.use('/nyxcipher', NyxcipherRouter);
 router.use('/item', ItemRouter);
 router.use('/ticket', TicketRouter);
 router.use('/payment', PaymentRouter);
-router.use('/transantions', TransactionRouter);
+router.use('/transactions', TransactionRouter);
 
 router.use('/auth', AuthRouter)
 

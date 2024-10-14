@@ -3,9 +3,9 @@ const router = express.Router()
 const {ROLE} = require('../config/constant')
 
 const AuthMiddleware = require('../middlewares/Authentication')
-const PaymentController = require('../controllers/PaymentController')
+const TransactionsController = require('../controllers/TransactionsController')
 
-router.get('/top10', PaymentController.getPayments)
+router.get('/top10', TransactionsController.getTransactions)
 
 
 
